@@ -1,1 +1,5 @@
 rootProject.name = 'kedaya'
+include 'manager'
+include 'common'
+include 'seller'
+include 'entity'

@@ -1,28 +1,41 @@
-buildscript {
-	ext {
-		springBootVersion = '2.1.2.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
-}
+group 'com.kedaya'
+version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
+apply from: "$rootDir/dependencies.gradle"
 
-group = 'com.kadaya'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+subprojects {
 
-repositories {
-	mavenCentral()
-}
+    buildscript {
+        repositories {
+            mavenCentral()
+        }
+        dependencies {
+            classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.2.RELEASE")
+        }
+    }
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    apply plugin: 'java'
+    apply plugin: 'war'
+    apply plugin: 'idea'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    war {
+        baseName = 'admin'
+        version =  '0.0.1'
+    }
+
+    repositories {
+        mavenLocal()
+        maven {
+            url = ' http://maven.oschina.net/content/groups/public'
+        }
+        mavenCentral()
+    }
+
+    dependencies {
+        compile libs.common
+    }
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 }

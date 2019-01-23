@@ -1,0 +1,28 @@
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://148.70.51.101:3306/kadaya
+    username: root
+    password: 4321dcba
+server:
+  context-path: /
+  port: 8083
+
+mybatis:
+  mapper-locations: classpath:mapper/*/*.xml
+  type-aliases-package: com.kedaya.entity
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  config: classpath:logback-dev.xml
+
+
+
+
+
+
+

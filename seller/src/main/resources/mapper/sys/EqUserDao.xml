@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kedaya.seller.dao.EqUserDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.kedaya.entity.app.user.EqUserEntity" id="eqUserMap">
+        <result property="id" column="id"/>
+        <result property="phone" column="phone"/>
+        <result property="nickname" column="nickname"/>
+        <result property="logoImg" column="logo_img"/>
+        <result property="name" column="name"/>
+        <result property="accountType" column="account_type"/>
+        <result property="createTime" column="create_time"/>
+        <result property="shareUser" column="share_user"/>
+        <result property="lastVisitTime" column="last_visit_time"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.kedaya.entity.app.user.EqUserEntity">
+		select * from eq_user where id = #{value}
+	</select>
+
+	<select id="findByUserName" resultType="com.kedaya.entity.app.user.EqUserEntity">
+		select * from eq_user where phone = #{username}
+	</select>
+
+	<select id="queryList" resultMap="eqUserMap">
+		select * from eq_user
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from eq_user 
+	</select>
+	 
+	<insert id="save" parameterType="com.kedaya.entity.app.user.EqUserEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into eq_user
+		(
+			`phone`, 
+			`password`, 
+			`nickname`, 
+			`logo_img`, 
+			`name`, 
+			`account_type`, 
+			`create_time`, 
+			`update_time`, 
+			`share_user`, 
+			`last_visit_time`
+		)
+		values
+		(
+			#{phone}, 
+			#{password}, 
+			#{nickname}, 
+			#{logoImg}, 
+			#{name}, 
+			#{accountType}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{shareUser}, 
+			#{lastVisitTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.kedaya.entity.app.user.EqUserEntity">
+		update eq_user 
+		<set>
+			<if test="phone != null">`phone` = #{phone}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="nickname != null">`nickname` = #{nickname}, </if>
+			<if test="logoImg != null">`logo_img` = #{logoImg}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="accountType != null">`account_type` = #{accountType}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="shareUser != null">`share_user` = #{shareUser}, </if>
+			<if test="lastVisitTime != null">`last_visit_time` = #{lastVisitTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from eq_user where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from eq_user where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
